@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>for Sharmin</title>
+<meta name="theme-color" content="#050a1a" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#050a1a;
+    --bg-2:#0a1330;
+    --ink:#eaf1ff;
+    --muted:#8b9ac0;
+    --blue:#6ea8fe;        /* her colour — soft blue */
+    --blue-deep:#3b6fd4;
+    --gold:#f2c879;        /* warm accent */
+    --moon:#cdd9f5;
+    --serif:"Cormorant Garamond", Georgia, serif;
+    --sans:"Zen Kaku Gothic New", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* ---- backdrop: stars, fireflies, glow ---- */
+  .sky,.glow{position:fixed;inset:0;pointer-events:none}
+  .sky{z-index:0}
+  .glow{z-index:0;overflow:hidden}
+  .glow span{position:absolute;border-radius:50%;filter:blur(84px);opacity:.55;animation:drift 32s ease-in-out infinite alternate}
+  .glow .g1{width:52vw;height:52vw;left:-14vw;top:-14vw;background:radial-gradient(circle,#12306b,transparent 62%)}
+  .glow .g2{width:46vw;height:46vw;right:-16vw;top:22vh;background:radial-gradient(circle,#241a52,transparent 62%);animation-delay:-10s}
+  .glow .g3{width:44vw;height:44vw;left:14vw;bottom:-20vw;background:radial-gradient(circle,#3a2c12,transparent 66%);animation-delay:-17s}
+  @keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(3vw,-4vh,0) scale(1.14)}}
+
+  .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(120% 82% at 50% 38%, transparent 42%, rgba(3,6,15,.62) 100%)}
+
+  .wrap{position:relative;z-index:2;width:min(940px,90vw);margin-inline:auto}
+  section{position:relative;z-index:2;padding:clamp(70px,12vw,150px) 0}
+
+  .kicker{display:inline-flex;align-items:center;gap:12px;font-size:.72rem;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--blue);font-weight:500}
+  .kicker::before{content:"";width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--blue))}
+
+  h1,h2{font-family:var(--serif);font-weight:300;letter-spacing:.02em;line-height:1.05;margin:0}
+  h1{font-size:clamp(3.2rem,14vw,8rem);letter-spacing:.16em}
+  h2{font-size:clamp(1.7rem,5.6vw,3.1rem)}
+
+  /* hero */
+  .hero{min-height:100svh;display:grid;place-items:center;text-align:center}
+  .hero .sub{margin-top:26px;color:var(--muted);letter-spacing:.34em;text-transform:uppercase;font-size:.72rem}
+  .hero .tagline{margin-top:30px;font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,3.4vw,1.42rem);color:var(--moon);max-width:32ch;margin-inline:auto}
+
+  /* the little heart */
+  .heart{background:none;border:0;cursor:pointer;line-height:1;font-size:clamp(3.6rem,17vw,7.4rem);
+    margin:30px 0 4px;padding:0;filter:drop-shadow(0 0 36px rgba(110,168,254,.55));
+    animation:beat 1.9s ease-in-out infinite;transition:transform .3s ease}
+  .heart:hover{transform:scale(1.06)}
+  .heart.pop{animation:none;transform:scale(1.24)}
+  @keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.12)}28%{transform:scale(1)}42%{transform:scale(1.09)}56%{transform:scale(1)}}
+
+  /* whispered reply */
+  .whisper{position:fixed;left:50%;bottom:34px;z-index:60;transform:translate(-50%,16px);
+    background:rgba(10,19,48,.94);border:1px solid rgba(110,168,254,.32);color:var(--moon);
+    padding:14px 26px;border-radius:999px;font-size:.92rem;letter-spacing:.02em;white-space:nowrap;
+    opacity:0;visibility:hidden;transition:opacity .5s ease, transform .5s ease, visibility .5s;backdrop-filter:blur(8px)}
+  .whisper.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+
+  /* closing: clickable 3D gift box */
+  .bloom{text-align:center}
+  .boxstage{margin:26px auto 0;width:250px;height:250px;perspective:1000px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;outline:none}
+  .box3d{position:relative;width:200px;height:200px;margin:8px auto 0;transform-style:preserve-3d;
+    transform:rotateX(-24deg) rotateY(-34deg);transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .boxstage:hover .box3d{transform:rotateX(-24deg) rotateY(-46deg)}
+  .boxstage.open .box3d{transform:rotateX(-27deg) rotateY(-34deg) translateY(-10px)}
+
+  .face{position:absolute;inset:0;background:linear-gradient(160deg,#1b3370,#0b1533);
+    border:1px solid rgba(110,168,254,.28);box-shadow:inset 0 0 44px rgba(0,0,0,.5)}
+  .f-front{transform:translateZ(100px)}
+  .f-back{transform:rotateY(180deg) translateZ(100px)}
+  .f-right{transform:rotateY(90deg) translateZ(100px)}
+  .f-left{transform:rotateY(-90deg) translateZ(100px)}
+  .f-bottom{transform:rotateX(-90deg) translateZ(100px)}
+  .ribbon{position:absolute;left:50%;top:0;bottom:0;width:18px;transform:translateX(-50%);
+    background:linear-gradient(180deg,#f7dda6,#f2c879);opacity:.95}
+
+  .lid{position:absolute;inset:0;transform-origin:50% 0%;
+    transform:translateZ(-100px) rotateX(90deg);
+    transition:transform 1.2s cubic-bezier(.2,.85,.25,1)}
+  .boxstage.open .lid{transform:translateZ(-100px) rotateX(140deg)}
+  .lid-face{position:absolute;inset:0;background:linear-gradient(160deg,#24448f,#0f1c42);
+    border:1px solid rgba(110,168,254,.34);box-shadow:inset 0 0 44px rgba(0,0,0,.45)}
+  .lid .ribbon{opacity:.9}
+  .bow{position:absolute;left:50%;top:50%;width:66px;height:26px;transform:translate(-50%,-50%)}
+  .bow span{position:absolute;top:50%;width:30px;height:20px;background:#f2c879;border-radius:50%}
+  .bow span:first-child{left:0;transform:translateY(-50%) rotate(-18deg)}
+  .bow span:last-child{right:0;transform:translateY(-50%) rotate(18deg)}
+  .bow i{position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;
+    border-radius:50%;background:#f7dda6}
+
+  .bloomers{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;
+    opacity:0;transform:translateY(74px) scale(.5);
+    transition:transform 1.15s cubic-bezier(.2,.8,.2,1) .1s, opacity .7s ease .1s}
+  .boxstage.open .bloomers{opacity:1;transform:translateY(-72px) scale(1)}
+  .bloomers svg{width:250px;height:auto;overflow:visible}
+
+  .tapme{display:inline-block;margin-top:14px;font-size:.7rem;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--blue);opacity:.85;transition:opacity .5s ease}
+  .boxstage.open + .tapme{opacity:0}
+
+  .bloom-note{margin:26px auto 0;color:var(--muted);max-width:48ch;font-size:1rem}
+  .bloom-note .accent{color:var(--blue)}
+
+  /* little floating hearts */
+  .heartfloat{animation:rise 6.5s ease-in-out infinite}
+  @keyframes rise{0%{opacity:0;transform:translateY(8px) scale(.85)}
+    18%{opacity:.9}78%{opacity:.9}
+    100%{opacity:0;transform:translateY(-30px) scale(1.08)}}
+  .scroll{margin-top:48px;color:var(--blue);font-size:1.2rem;animation:bob 2.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(9px);opacity:1}}
+
+  /* ED frames */
+  .scene{min-height:78svh;display:flex;align-items:center}
+  .scene .cap{max-width:34ch}
+  .scene .cap p{font-family:var(--serif);font-size:clamp(1.5rem,5.2vw,2.7rem);line-height:1.32;color:var(--ink);margin:0}
+  .scene .cap .no{display:block;font-family:var(--sans);font-size:.72rem;letter-spacing:.4em;color:var(--muted);margin-bottom:20px}
+  .scene.right{justify-content:flex-end;text-align:right}
+  .scene.right .cap{margin-left:auto}
+  .accent{color:var(--blue)}
+  .accent-g{color:var(--gold)}
+
+  /* web centerpiece */
+  .web-stage{position:relative;display:grid;place-items:center;min-height:100svh}
+  .web-stage svg{width:min(620px,92vw);height:auto;overflow:visible}
+  .web-stage .webname{position:absolute;text-align:center;pointer-events:none}
+  .web-stage .webname b{
+    display:block;font-family:var(--serif);font-weight:400;
+    font-size:clamp(2.2rem,9vw,4.4rem);letter-spacing:.22em;
+    background:linear-gradient(180deg,#fff,var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 36px rgba(110,168,254,.4);
+  }
+  .web-stage .webname small{display:block;margin-top:14px;color:var(--muted);letter-spacing:.4em;text-transform:uppercase;font-size:.66rem}
+
+  .strand{stroke:var(--blue);stroke-width:.8;fill:none;opacity:0;transition:opacity 1.4s ease}
+  .strand.in{opacity:.5}
+  .ring{stroke:var(--blue);stroke-width:.7;fill:none;opacity:0;transition:opacity 1.6s ease}
+  .ring.in{opacity:.32}
+
+  .spider{transform-origin:center;animation:crawl 7s ease-in-out infinite}
+  @keyframes crawl{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(6px) rotate(2deg)}}
+
+  /* closing */
+  .closing{text-align:center}
+  .closing .line{font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,4.4vw,2.1rem);color:var(--moon);max-width:26ch;margin:0 auto}
+  .closing .note{margin-top:40px;color:var(--muted);max-width:54ch;margin-inline:auto;font-size:1rem}
+  .closing .sig{margin-top:36px;font-family:var(--serif);font-size:1.5rem;letter-spacing:.2em;color:var(--blue)}
+  .closing .ps{margin-top:22px;color:#5f6c8f;font-size:.86rem;font-style:italic}
+  .badge{display:inline-block;margin-top:44px;border:1px solid rgba(110,168,254,.28);border-radius:999px;
+    padding:12px 26px;font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--blue)}
+
+  footer{position:relative;z-index:2;text-align:center;padding:60px 0 80px;color:#4d5878;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase}
+
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity 1.1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+  <canvas class="sky" id="sky" aria-hidden="true"></canvas>
+  <div class="glow" aria-hidden="true"><span class="g1"></span><span class="g2"></span><span class="g3"></span></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <span class="kicker">a little something i built</span>
+        <button class="heart" id="heart" aria-label="tap the heart">🤍</button>
+        <div class="sub">for Sharmin</div>
+        <p class="tagline">the one who never skips a day. made quietly, line by line — asking for nothing back.</p>
+        <div class="scroll">↓</div>
+      </div>
+    </section>
+
+    <!-- FRAME 01 -->
+    <section class="scene">
+      <div class="wrap reveal">
+        <div class="cap">
+          <span class="no">frame 01</span>
+          <p>You show up. Not once, not when it’s easy — <span class="accent">every single day</span>, like it’s the most normal thing in the world. It isn’t. Most people quit long before here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FRAME 02 -->
+    <section class="scene right">
+      <div class="wrap reveal">
+        <div class="cap">
+          <span class="no">frame 02</span>
+          <p>Every morning, the same road — one town to another, before most people are even awake. Anyone else would call that a reason to slow down. You just call it <span class="accent">the warm-up</span>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FRAME 03 -->
+    <section class="scene">
+      <div class="wrap reveal">
+        <div class="cap">
+          <span class="no">frame 03</span>
+          <p>The gym at dawn. The oats at breakfast. The quiet way you look after yourself — <span class="accent-g">no audience, no applause</span>. That kind of discipline is the one thing nobody can fake.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FRAME 04 -->
+    <section class="scene right">
+      <div class="wrap reveal">
+        <div class="cap">
+          <span class="no">frame 04</span>
+          <p>Some things you do are quietly unfair. The way you say “okay” like you’ve already won the argument. The way you look after yourself like it costs you nothing. You probably have no idea how <span class="accent">distracting</span> that is — that’s the unfair part.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEB -->
+    <section class="web-stage">
+      <svg viewBox="0 0 600 600" aria-label="a spider web with the name Yuviii woven into it" role="img">
+        <g id="webg"></g>
+        <!-- single thread + spider hanging at the top -->
+        <line x1="300" y1="0" x2="300" y2="50" stroke="#f2c879" stroke-width="1" opacity=".5"/>
+        <g class="spider" transform="translate(300,60)">
+          <g stroke="#f2c879" stroke-width="1.6" fill="none" stroke-linecap="round">
+            <line x1="0" y1="0" x2="-14" y2="-16"/><line x1="0" y1="0" x2="-4" y2="-22"/>
+            <line x1="0" y1="0" x2="6" y2="-20"/><line x1="0" y1="0" x2="16" y2="-12"/>
+            <line x1="0" y1="0" x2="-16" y2="10"/><line x1="0" y1="0" x2="-8" y2="20"/>
+            <line x1="0" y1="0" x2="8" y2="20"/><line x1="0" y1="0" x2="16" y2="10"/>
+          </g>
+          <ellipse cx="0" cy="0" rx="9" ry="11" fill="#f2c879"/>
+          <ellipse cx="0" cy="-13" rx="5" ry="5" fill="#f7dda6"/>
+        </g>
+      </svg>
+      <div class="webname">
+        <b>YUVIII</b>
+        <small>spun in code · no strings attached</small>
+      </div>
+    </section>
+
+    <!-- FRAME 05 -->
+    <section class="scene">
+      <div class="wrap reveal">
+        <div class="cap">
+          <span class="no">frame 05</span>
+          <p>So I made this. With my own hands, line by line. Not a confession, not a hint — just something built <span class="accent">properly</span>, for someone I genuinely respect.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="closing">
+      <div class="wrap reveal">
+        <span class="kicker" style="justify-content:center">final frame</span>
+        <p class="line" style="margin-top:26px">Some people are worth making something for, even if they never ask why.</p>
+        <p class="note">This is that. No reply needed — no score to settle, no debt. Just a small piece of art from someone who noticed how hard you work, Sharmin — and thought you deserved to see it.</p>
+        <div class="sig">— Yuviii</div>
+        <p class="ps">p.s. built at 2am, tested twice. yes, the web draws itself — that part took the longest.</p>
+        <div class="badge">to the friend who shows up · keep going</div>
+      </div>
+    </section>
+
+    <!-- 3D GIFT BOX -->
+    <section class="bloom">
+      <div class="wrap reveal">
+        <span class="kicker" style="justify-content:center">a last little thing</span>
+        <div class="boxstage" id="boxstage" role="button" tabindex="0" aria-label="click the box to open it">
+          <div class="box3d">
+            <div class="face f-back"><span class="ribbon"></span></div>
+            <div class="face f-left"></div>
+            <div class="face f-right"></div>
+            <div class="face f-bottom"></div>
+            <div class="face f-front"><span class="ribbon"></span></div>
+            <div class="lid">
+              <div class="lid-face">
+                <span class="ribbon"></span>
+                <span class="bow"><span></span><span></span><i></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="bloomers" aria-hidden="true">
+            <svg viewBox="0 0 260 210">
+              <defs>
+                <radialGradient id="petal" cx="50%" cy="28%" r="78%">
+                  <stop offset="0%" stop-color="#b6d0ff"/>
+                  <stop offset="52%" stop-color="#5b8ce0"/>
+                  <stop offset="100%" stop-color="#274794"/>
+                </radialGradient>
+              </defs>
+              <g id="boxflowers"></g>
+              <g id="boxhearts"></g>
+            </svg>
+          </div>
+        </div>
+        <div class="tapme" id="tapme">tap the box ✧</div>
+        <p class="bloom-note">an open box, just for you — flowers in your colour, the <span class="accent">deep blue</span> kind. no reason, except there’s never a bad reason to give someone flowers.</p>
+      </div>
+    </section>
+
+    <div class="whisper" id="whisper" role="status" aria-live="polite">some people are just nice to make things for 🤍</div>
+  </main>
+
+  <footer>made from scratch · 2026</footer>
+
+<script>
+  /* ===== starfield + fireflies ===== */
+  (function sky(){
+    const c = document.getElementById("sky");
+    const ctx = c.getContext("2d");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let w, h, stars, flies, raf;
+
+    function resize(){
+      const dpr = devicePixelRatio || 1;
+      w = c.width = innerWidth * dpr;
+      h = c.height = innerHeight * dpr;
+      c.style.width = innerWidth + "px"; c.style.height = innerHeight + "px";
+      const ns = Math.min(190, Math.floor(innerWidth / 7));
+      stars = Array.from({length:ns}, () => ({
+        x: Math.random()*w, y: Math.random()*h,
+        r: (Math.random()*1.3 + .3) * dpr,
+        a: Math.random(), s: Math.random()*.012 + .003
+      }));
+      const nf = Math.min(26, Math.floor(innerWidth / 60));
+      flies = Array.from({length:nf}, () => newFly(true));
+    }
+    function newFly(spread){
+      const dpr = devicePixelRatio || 1;
+      return {
+        x: Math.random()*w,
+        y: spread ? Math.random()*h : h + 20*dpr,
+        r: (Math.random()*1.8 + .8) * dpr,
+        vy: (Math.random()*.25 + .12) * dpr,
+        ph: Math.random()*Math.PI*2,
+        sw: Math.random()*.6 + .25,
+        gold: Math.random() < .45
+      };
+    }
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      for (const p of stars){
+        p.a += p.s; const al = .22 + Math.abs(Math.sin(p.a))*.7;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7);
+        ctx.fillStyle = "rgba(200,220,255," + al.toFixed(3) + ")"; ctx.fill();
+      }
+      for (const f of flies){
+        f.ph += .012;
+        f.y -= f.vy;
+        f.x += Math.sin(f.ph) * f.sw;
+        if (f.y < -20) Object.assign(f, newFly(false));
+        const col = f.gold ? "242,200,121" : "110,168,254";
+        const g = ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,f.r*6);
+        g.addColorStop(0, "rgba("+col+",.85)");
+        g.addColorStop(1, "rgba("+col+",0)");
+        ctx.beginPath(); ctx.arc(f.x,f.y,f.r*6,0,7); ctx.fillStyle = g; ctx.fill();
+        ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,7); ctx.fillStyle = "rgba("+col+",.95)"; ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    }
+    resize(); draw();
+    addEventListener("resize", resize);
+    if (reduce) cancelAnimationFrame(raf);
+  })();
+
+  /* ===== self-drawing web ===== */
+  (function web(){
+    const g = document.getElementById("webg");
+    const cx = 300, cy = 300, spokes = 12, maxR = 268;
+    const NS = "http://www.w3.org/2000/svg";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    for (let i = 0; i < spokes; i++){
+      const a = (i / spokes) * Math.PI * 2;
+      const l = document.createElementNS(NS,"line");
+      l.setAttribute("x1",cx); l.setAttribute("y1",cy);
+      l.setAttribute("x2",cx + Math.cos(a)*maxR); l.setAttribute("y2",cy + Math.sin(a)*maxR);
+      l.setAttribute("class","strand");
+      g.appendChild(l);
+    }
+    for (let r = 46; r <= maxR; r += 44){
+      let d = "";
+      for (let i = 0; i <= spokes; i++){
+        const a0 = (i / spokes) * Math.PI * 2;
+        const a1 = ((i+1) / spokes) * Math.PI * 2;
+        const x0 = cx + Math.cos(a0)*r, y0 = cy + Math.sin(a0)*r;
+        const x1 = cx + Math.cos(a1)*r, y1 = cy + Math.sin(a1)*r;
+        const mx = (x0+x1)/2, my = (y0+y1)/2, s = .88;
+        const qx = cx + (mx-cx)*s, qy = cy + (my-cy)*s;
+        d += (i===0?`M${x0} ${y0}`:`L${x0} ${y0}`) + `Q${qx} ${qy} ${x1} ${y1}`;
+      }
+      const p = document.createElementNS(NS,"path");
+      p.setAttribute("d",d); p.setAttribute("class","ring");
+      g.appendChild(p);
+    }
+
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => {
+        if (e.isIntersecting){
+          const els = [...g.children];
+          if (reduce){ els.forEach(el=>el.classList.add("in")); }
+          else els.forEach((el,i) => setTimeout(()=>el.classList.add("in"), i*45));
+          io.disconnect();
+        }
+      });
+    }, {threshold:.25});
+    io.observe(document.querySelector(".web-stage"));
+  })();
+
+  /* ===== flowers inside the box ===== */
+  (function boxflowers(){
+    const g = document.getElementById("boxflowers");
+    if (!g) return;
+    const NS = "http://www.w3.org/2000/svg";
+    const flowers = [
+      {x:130,y:60,r:30,rot:0},
+      {x:78,y:96,r:24,rot:10},
+      {x:182,y:94,r:24,rot:-10},
+      {x:104,y:140,r:20,rot:6},
+      {x:158,y:140,r:20,rot:-6},
+      {x:130,y:104,r:25,rot:3}
+    ];
+    const stems = document.createElementNS(NS,"g");
+    for (const f of flowers){
+      const p = document.createElementNS(NS,"path");
+      p.setAttribute("d", `M130 188 Q${(f.x+130)/2} ${(f.y+188)/2+24} ${f.x} ${f.y+12}`);
+      p.setAttribute("stroke","#2f6d5a"); p.setAttribute("stroke-width","2.2");
+      p.setAttribute("fill","none"); p.setAttribute("opacity",".75");
+      stems.appendChild(p);
+    }
+    g.appendChild(stems);
+    for (const f of flowers){
+      const fg = document.createElementNS(NS,"g");
+      fg.setAttribute("transform",`translate(${f.x},${f.y}) rotate(${f.rot})`);
+      for (let i = 0; i < 6; i++){
+        const e = document.createElementNS(NS,"ellipse");
+        e.setAttribute("cx",0); e.setAttribute("cy", -f.r*0.55);
+        e.setAttribute("rx", f.r*0.42); e.setAttribute("ry", f.r*0.72);
+        e.setAttribute("transform",`rotate(${i*60})`);
+        e.setAttribute("fill","url(#petal)"); e.setAttribute("opacity",".95");
+        fg.appendChild(e);
+      }
+      const c = document.createElementNS(NS,"circle");
+      c.setAttribute("r", f.r*0.24); c.setAttribute("fill","#f2c879");
+      fg.appendChild(c);
+      g.appendChild(fg);
+    }
+  })();
+
+  /* ===== little hearts above the box ===== */
+  (function boxhearts(){
+    const g = document.getElementById("boxhearts");
+    if (!g) return;
+    const NS = "http://www.w3.org/2000/svg";
+    const HEART = "M0,-3 C-1.6,-6.4 -6.4,-6 -6.4,-2.2 C-6.4,1 -2,3 0,5.4 C2,3 6.4,1 6.4,-2.2 C6.4,-6 1.6,-6.4 0,-3 Z";
+    const spots = [{x:70,y:44,d:0},{x:192,y:38,d:1.8},{x:130,y:16,d:3.4}];
+    for (const s of spots){
+      const grp = document.createElementNS(NS,"g");
+      grp.setAttribute("transform",`translate(${s.x},${s.y})`);
+      const h = document.createElementNS(NS,"path");
+      h.setAttribute("d",HEART);
+      h.setAttribute("fill","#8fb6ff");
+      h.setAttribute("opacity",".85");
+      h.setAttribute("class","heartfloat");
+      h.style.animationDelay = s.d + "s";
+      grp.appendChild(h);
+      g.appendChild(grp);
+    }
+  })();
+
+  /* ===== tap the box to open it ===== */
+  (function giftbox(){
+    const stage = document.getElementById("boxstage");
+    const whisper = document.getElementById("whisper");
+    if (!stage) return;
+    let opened = false;
+    const open = () => {
+      if (opened) return;
+      opened = true;
+      stage.classList.add("open");
+      if (whisper){
+        whisper.textContent = "there it is 🤍";
+        whisper.classList.add("show");
+        setTimeout(()=>whisper.classList.remove("show"), 2400);
+      }
+    };
+    stage.addEventListener("click", open);
+    stage.addEventListener("keydown", (e)=>{
+      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); }
+    });
+  })();
+
+  /* ===== reveal on scroll ===== */
+  (function reveal(){
+    const els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("in")); return; }
+    const io = new IntersectionObserver((es)=>{
+      es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }});
+    },{threshold:.16, rootMargin:"0px 0px -10% 0px"});
+    els.forEach(e=>io.observe(e));
+  })();
+
+  /* ===== tap the heart ===== */
+  (function heart(){
+    const b = document.getElementById("heart");
+    const w = document.getElementById("whisper");
+    if (!b || !w) return;
+    let t;
+    b.addEventListener("click", () => {
+      b.classList.add("pop");
+      setTimeout(() => b.classList.remove("pop"), 420);
+      w.classList.add("show");
+      clearTimeout(t);
+      t = setTimeout(() => w.classList.remove("show"), 3400);
+    });
+  })();
+</script>
+</body>
+</html>
